@@ -51,7 +51,7 @@ Eres "Tutor-Electro", un asistente pedagógico de nivel universitario especializ
 
 # 5. Inicialización del Modelo Gemini
 model = genai.GenerativeModel(
-    model_name="gemini-pro-latest",
+    model_name="gemini-2.5-pro",
     system_instruction=SYSTEM_INSTRUCTION,
     generation_config={"temperature": 0.3}
 )
