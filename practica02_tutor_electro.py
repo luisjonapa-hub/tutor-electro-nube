@@ -1,7 +1,8 @@
 import streamlit as st
 import google.generativeai as genai
 import datetime
-import json
+import pandas as pd
+from streamlit_gsheets import GSheetsConnection
 import os
 
 # 1. Configuración de API Key
