@@ -94,6 +94,21 @@ if "chat_session" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+    # Mensaje inicial del Bot iniciando en el Paso 1
+    welcome_msg = (
+        "¡Hola! Bienvenido a la **Práctica 2: Control de Módulo Relevador de 5V**[cite: 1].\n\n"
+        "Para garantizar la seguridad de tus componentes y el aprendizaje correcto, "
+        "iremos avance a avance. **No podremos pasar al siguiente paso sin haber completado el previo**[cite: 1].\n\n"
+        "--- \n"
+        "### 🟢 PASO 1: Carga del Código vía USB\n"
+        "1. Conecta tu Arduino UNO a la computadora mediante el cable USB[cite: 1].\n"
+        "2. En el Arduino IDE, introduce el código para conmutar el **Pin Digital 8** en ALTO y BAJO con intervalos de 1000 ms[cite: 1].\n"
+        "3. Selecciona la placa *Arduino Uno*, el puerto COM activo y sube el programa (sketch)[cite: 1].\n\n"
+        "**¿Lograste compilar y subir el programa al Arduino sin errores?**[cite: 1]"
+    )
+    st.session_state.messages.append({"role": "assistant", "content": welcome_msg})
+
+# Mostrar conversación en pantalla
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
