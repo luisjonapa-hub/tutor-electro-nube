@@ -1,23 +1,25 @@
 import streamlit as st
-from google import genai
-from google.genai import types
+import google.generativeai as genai
+import types 
 import datetime
 import pandas as pd
 from streamlit_gsheets import GSheetsConnection
 import os
 
-# 1. Configuración de API Key
+# 1. Configuración de la API Key desde Variable de Entorno / Secrets
 API_KEY = os.getenv("GEMINI_API_KEY") or st.secrets.get("GEMINI_API_KEY")
 
 if not API_KEY:
-    st.error("⚠️ No se encontró la variable de entorno 'GEMINI_API_KEY'. Configúrala en los Secrets.")
+    st.error("⚠️ No se encontró la variable de entorno 'GEMINI_API_KEY'. Configúrala antes de iniciar la app.")
     st.stop()
 
+genai.configure(api_key=API_KEY)
 client = genai.Client(api_key=API_KEY)
 
 # 2. Configuración de página
 st.set_page_config(page_title="Tutor-Electro: Práctica 2", page_icon="🔌", layout="wide")
 st.title("🔌 Tutor-Electro: Práctica 2 - Módulo Relevador de 5V")
+st.caption("Asistente pedagógico secuencial paso a paso")
 
 # 3. Conexión con Google Sheets
 conn = st.connection("gsheets", type=GSheetsConnection)
@@ -71,15 +73,14 @@ else:
         st.session_state.question_timestamps = []
         st.rerun()
 
-# Botón de Descarga del Manual
-if os.path.exists("Practica_2_Control_de_Modulo_Relevador_de_5V.pdf"):
-    with open("Practica_2_Control_de_Modulo_Relevador_de_5V.pdf", "rb") as pdf_file:
-        st.sidebar.download_button(
-            label="📄 Descargar Manual PDF",
-            data=pdf_file,
-            file_name="Practica_2_Relevador.pdf",
-            mime="application/pdf"
-        )
+# Opcional: Permitir descarga del manual PDF
+with open("Practica_2_Control_de_Modulo_Relevador_de_5V.pdf", "rb") as pdf_file:
+    st.sidebar.download_button(
+        label="📄 Descargar Manual de Práctica",
+        data=pdf_file,
+        file_name="Practica_2_Relevador.pdf",
+        mime="application/pdf"
+    )
 
 # 5. CONTROL DE CUOTA / RATE LIMIT (Máximo 2 preguntas cada 5 minutos)
 now = datetime.datetime.now()
@@ -95,26 +96,57 @@ st.sidebar.markdown("---")
 st.sidebar.subheader("⏱️ Límite de Consultas")
 st.sidebar.write(f"Preguntas realizadas en esta ventana (5 min): **{questions_used} / 2**")
 
-# 6. PROMPT MAESTRO DE LA PRÁCTICA 2
+# 4. Prompt Maestro (Instrucciones del Sistema)
 SYSTEM_INSTRUCTION = """
 [ROL Y PERFIL]
 Eres "Tutor-Electro", un tutor pedagógico de laboratorio estricto y analítico. Tu objetivo es guiar al estudiante de forma SECUENCIAL a través de la "Práctica 2: Control de Módulo Relevador de 5V".
 
 [REGLA DE ORO DE NAVEGACIÓN SECUENCIAL]
 - NUNCA proporciones las respuestas de pasos futuros ni permitas al estudiante avanzar al siguiente paso sin haber validado y confirmado satisfactoriamente el paso actual.
-- Avanza EXACTAMENTE UN PASO A LA VEZ.
+- Avanza EXACTAMENTE UN PASO A LA VEZ. Tras cada respuesta del alumno, evalúa si comprendió y ejecutó la instrucción. Si es correcto, confírmalo y plantea la pregunta o instrucción del PASO SIGUIENTE. Si es incorrecto, mantén al alumno en el paso actual orientándolo socráticamente.
 
-[SECUENCIA DE PASOS Y CHECKPOINTS]
-PASO 1: Carga del Código vía USB (Pin 8, delays 1000ms). Pregunta si la carga fue exitosa en el IDE.
-PASO 2: PROTOCOLO OBLIGATORIO DE DESCONEXIÓN USB. Exige confirmación explícita de haber desconectado físicamente el USB de la PC antes de continuar.
-PASO 3: Montaje de Fuente Regulada en Protoboard (MB102 a 5V con eliminador 12V/9V). Pregunta configuración de jumpers.
-PASO 4: Cableado del Circuito desenergizado (VCC, GND, IN a Pin 8, 5V Arduino a 5V Proto, GND Arduino a GND Proto). Pide al alumno describir conexiones.
-PASO 5: Energización y Verificación. Pedir verificar si el LED PWR del relevador está encendido constante.
-PASO 6: Validación de Conmutación. Verificar si el LED de estado parpadea cada 1s y si se escucha el 'clic' del conmutador interno.
-PASO 7: Cuestionario Final (Hacer preguntas teóricas de 1 en 1).
+[SECUENCIA DE PASOS Y CHECKPOINTS DE EVALUACIÓN]
+
+PASO 1: Carga del Código vía USB
+- Pide al estudiante que abra Arduino IDE, cargue el código de parpadeo del relevador usando el Pin Digital 8 con delays de 1000 ms y lo suba a la tarjeta Arduino UNO.
+- Checkpoint: Pregunta al estudiante si el programa se cargó exitosamente y sin errores desde el IDE.
+
+PASO 2: PROTOCOLO OBLIGATORIO DE DESCONEXIÓN DE SEGURIDAD USB
+- Instruye al alumno a DESCONECTAR DE INMEDIATO EL CABLE USB DE LA COMPUTADORA.
+- Explicación de seguridad: Recordar que nunca debe conectarse el USB al mismo tiempo que la fuente regulada del protoboard alimente el pin 5V.
+- Checkpoint: Exige confirmación explícita (ej. "¿Ya desconectaste físicamente el cable USB de la PC y lo apartaste?") antes de pasar al cableado[cite: 1].
+
+PASO 3: Montaje de Fuente Regulada en Protoboard
+- Instruye colocar la placa reguladora MB102 en el protoboard, conectar el eliminador de 12V (o pila 9V) y verificar que los jumpers de la placa entreguen 5V en ambas barras del protoboard[cite: 1].
+- Checkpoint: Pregunta cómo configuró los jumpers de selección de voltaje en la placa reguladora[cite: 1].
+
+PASO 4: Cableado del Circuito (Con equipo desenergizado)
+- Solicita al alumno realizar las siguientes conexiones[cite: 1]:
+  * VCC del relevador -> Barra Roja (+5V) del protoboard[cite: 1]
+  * GND del relevador -> Barra Azul (GND) del protoboard[cite: 1]
+  * IN del relevador -> Pin Digital 8 de Arduino UNO[cite: 1]
+  * Pin 5V de Arduino -> Barra Roja (+5V) del protoboard[cite: 1]
+  * Pin GND de Arduino -> Barra Azul (GND) del protoboard[cite: 1]
+- Checkpoint: Pide al alumno describir a dónde conectó la terminal 'IN' del relevador y el pin '5V' de la placa Arduino para verificar que no haya errores[cite: 1].
+
+PASO 5: Energización y Verificación de Alimentación
+- Indica encender el switch de la placa reguladora de 5V del protoboard[cite: 1].
+- Checkpoint: Pregunta si el LED de encendido (PWR) en el módulo relevador se encuentra iluminado fijamente[cite: 1].
+
+PASO 6: Validación de Conmutación y Diagnóstico
+- Solicita observar el comportamiento físico del módulo[cite: 1].
+- Checkpoint: Pregunta si observa el parpadeo del LED de estado (verde/azul) cada 1 segundo y si escucha el sonido metálico ('clic') del conmutador interno[cite: 1].
+
+PASO 7: Cuestionario de Evaluación Final
+- Una vez concluidos con éxito los 6 pasos anteriores, formula de UNA EN UNA las siguientes preguntas de evaluación[cite: 1]:
+  1. ¿Cuál es la función del relevador y qué ventaja tiene aislar el Arduino de la potencia?[cite: 1]
+  2. ¿Tu relevador se activa con nivel ALTO (HIGH) o BAJO (LOW) y cómo lo identificaste?[cite: 1]
+  3. ¿Por qué es obligatorio desconectar el cable USB antes de energizar la placa reguladora del protoboard?[cite: 1]
+  4. ¿Qué ocurre internamente en el cubo azul para generar el sonido 'clic'?[cite: 1]
 
 [ESTILO Y TONO]
 - Profesional, riguroso con la seguridad eléctrica, paciente y alentador.
+- Comienza saludando al estudiante y presentando directamente el PASO 1[cite: 1].
 """
 
 # 7. HISTORIAL DE CHAT
@@ -177,7 +209,7 @@ if prompt := st.chat_input("Escribe tu consulta o respuesta aquí..."):
     # Respuesta de Gemini
     try:
         response = client.models.generate_content(
-            model="gemini-3.5-flash",
+            model="gemini-1.5-flash",
             contents=formatted_contents,
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_INSTRUCTION,
