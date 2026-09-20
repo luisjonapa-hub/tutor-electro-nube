@@ -14,15 +14,24 @@ if not API_KEY:
 
 genai.configure(api_key=API_KEY)
 
-# 2. Configuración básica de la página
-st.set_page_config(page_title="Tutor-Electro", page_icon="⚡", layout="wide")
-st.title("⚡ Tutor-Electro: Asistente para Laboratorio de Arduino")
-st.caption("Sistema de apoyo pedagógico para armado de circuitos en Protoboard")
+# 2. Configuración de página
+st.set_page_config(page_title="Tutor-Electro: Práctica 2", page_icon="🔌", layout="wide")
+st.title("🔌 Tutor-Electro: Práctica 2 - Módulo Relevador de 5V")
+st.caption("Asistente pedagógico secuencial paso a paso")
 
 # 3. Barra lateral: Solo datos del Estudiante
 st.sidebar.header("📋 Datos del Estudiante")
 student_id = st.sidebar.text_input("Matrícula / ID de Alumno:")
 student_name = st.sidebar.text_input("Nombre completo:")
+
+# Opcional: Permitir descarga del manual PDF
+with open("Practica_2_Control_de_Modulo_Relevador_de_5V.pdf", "rb") as pdf_file:
+    st.sidebar.download_button(
+        label="📄 Descargar Manual de Práctica",
+        data=pdf_file,
+        file_name="Practica_2_Relevador.pdf",
+        mime="application/pdf"
+    )
 
 # 4. Prompt Maestro (Instrucciones del Sistema)
 SYSTEM_INSTRUCTION = """
