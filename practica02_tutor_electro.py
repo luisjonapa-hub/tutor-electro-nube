@@ -24,6 +24,15 @@ st.sidebar.header("📋 Datos del Estudiante")
 student_id = st.sidebar.text_input("Matrícula / ID de Alumno:")
 student_name = st.sidebar.text_input("Nombre completo:")
 
+# Opcional: Permitir descarga del manual PDF
+with open("Practica_2_Control_de_Modulo_Relevador_de_5V.pdf", "rb") as pdf_file:
+    st.sidebar.download_button(
+        label="📄 Descargar Manual de Práctica",
+        data=pdf_file,
+        file_name="Practica_2_Relevador.pdf",
+        mime="application/pdf"
+    )
+
 
 # 4. Prompt Maestro (Instrucciones del Sistema)
 SYSTEM_INSTRUCTION = """
