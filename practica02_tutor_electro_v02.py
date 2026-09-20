@@ -209,7 +209,7 @@ if prompt := st.chat_input("Escribe tu consulta o respuesta aquí..."):
     # Respuesta de Gemini
     try:
         response = client.models.generate_content(
-            model="gemini-1.5-flash",
+            model="gemini-3.5-flash",
             contents=formatted_contents,
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_INSTRUCTION,
