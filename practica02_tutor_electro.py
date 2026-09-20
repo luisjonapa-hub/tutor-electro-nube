@@ -149,6 +149,7 @@ if prompt := st.chat_input("Escribe tu duda o avance de tu circuito aquí..."):
         # Crear nuevo registro en formato DataFrame
         new_log = pd.DataFrame([{
             "timestamp": str(datetime.datetime.now()),
+            "practica": "Práctica 2: Control de Módulo Relevador de 5V",
             "student_id": student_id,
             "student_name": student_name,
             "user_prompt": prompt,
