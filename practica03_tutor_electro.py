@@ -17,8 +17,8 @@ if not API_KEY:
 client = genai.Client(api_key=API_KEY)
 
 # 2. Configuración de página
-st.set_page_config(page_title="Tutor-Electro: Práctica 2", page_icon="🔌", layout="wide")
-st.title("🔌 Tutor-Electro: Práctica 2 - Módulo Relevador de 5V")
+st.set_page_config(page_title="Tutor-Electro: Práctica 3", page_icon="🔌", layout="wide")
+st.title("🔌 Tutor-Electro: Práctica 3 - Módulo Relevador de 5V con Motor")
 st.caption("Asistente pedagógico secuencial paso a paso")
 
 # 3. Conexión a Google Sheets e Inicialización del Estado de Sesión
