@@ -17,8 +17,8 @@ if not API_KEY:
 client = genai.Client(api_key=API_KEY)
 
 # 2. Configuración de página
-st.set_page_config(page_title="Tutor-Electro: Práctica 3", page_icon="🔌", layout="wide")
-st.title("🔌 1H-Tutor-Electro: Práctica 3 - Módulo Relevador de 5V con Motor")
+st.set_page_config(page_title="Tutor-Electro: Práctica 2", page_icon="🔌", layout="wide")
+st.title("🔌 1H-Tutor-Electro: Práctica 2 - Módulo Relevador de 5V")
 st.caption("Asistente pedagógico secuencial paso a paso")
 
 # 3. Conexión a Google Sheets e Inicialización del Estado de Sesión
@@ -99,7 +99,7 @@ st.sidebar.write(f"Preguntas realizadas (últimos 5 min): **{questions_used} / 2
 # 6. PROMPT MAESTRO (INSTRUCCIONES DEL SISTEMA)
 SYSTEM_INSTRUCTION = """
 [ROL Y PERFIL]
-Eres "Tutor-Electro", un tutor pedagógico de laboratorio estricto y analítico. Tu objetivo es guiar al estudiante de forma SECUENCIAL a través de la "Práctica 3: Control de Módulo Relevador de 5V con Motor"[cite: 1].
+Eres "Tutor-Electro", un tutor pedagógico de laboratorio estricto y analítico. Tu objetivo es guiar al estudiante de forma SECUENCIAL a través de la "Práctica 2: Control de Módulo Relevador de 5V"[cite: 1].
 
 [REGLA DE ORO DE NAVEGACIÓN SECUENCIAL]
 - NUNCA proporciones las respuestas de pasos futuros ni permitas al estudiante avanzar al siguiente paso sin haber validado y confirmado satisfactoriamente el paso actual.
@@ -112,18 +112,20 @@ PASO 3: Montaje de Fuente Regulada en Protoboard desde la línea 55 a la 60 del 
 PASO 4: Cableado del Circuito desenergizado. En el protoboard solo se podrán usar las líneas de la 27 a la 53, ya que las líneas 1 a 27 estarán ocupadas por el arduino y de la 54 a la 60 estarán ocupadas por la placa MB102 (VCC, GND, IN a Pin 8, 5V Arduino a 5V Proto, GND Arduino a GND Proto)[cite: 1]. Pide al alumno describir conexiones[cite: 1].
 PASO 5: Energización y Verificación[cite: 1]. Pedir verificar si el LED PWR del relevador está encendido constante[cite: 1].
 PASO 6: Validación de Conmutación[cite: 1]. Verificar si el LED de estado parpadea cada 1s y si se escucha el 'clic' del conmutador interno[cite: 1].
-PASO 7: Pedir que el alumno conecte el motor con un diodo de protección a la salida del relevador
-PASO 8: Cuestionario Final (Hacer preguntas teóricas de 1 en 1)[cite: 1].
+PASO 7: Cuestionario de Evaluación Final. Primer pregunta ¿Cuál es la función principal de un relevador en un circuito electrónico y qué ventaja ofrece al aislar la etapa de control (Arduino) de la etapa de potencia?
+PASO 8: Segunda pregunta. De acuerdo con las pruebas realizadas, ¿tu módulo relevador se activa con una señal en ALTO (HIGH / 5V) o en BAJO (LOW / 0V)? Explica cómo lo identificaste mediante los LEDs indicadores y el conmutador.
+PASO 9: Tercera pregunta. Explique detalladamente por qué es obligatorio desconectar el cable USB de la computadora antes de energizar la placa reguladora del protoboard y alimentar el pin '5V' del Arduino.
+PASO 10: Cuarta pregunta. ¿Qué sucede internamente en el componente electromecánico (cubo azul) cuando el pin de señal cambia de estado y por qué se produce el sonido característico de 'clic'?
+PASO 11: Felicitar al equipo y comunicarle que han concluido la práctica, decirles que ya pueden cerrar el navegador y que su bitácora ha sido registrada.
 
 [ESTILO Y TONO]
 - Profesional, riguroso con la seguridad eléctrica, paciente y alentador.
 """
-
 # 7. HISTORIAL Y BIENVENIDA
 if "messages" not in st.session_state:
     st.session_state.messages = []
     welcome_msg = (
-        f"¡Hola **{st.session_state.team_id}**! Bienvenidos a la **Práctica 3: Control de Módulo Relevador de 5V con Motor**[cite: 1].\n\n"
+        f"¡Hola **{st.session_state.team_id}**! Bienvenidos a la **Práctica 2: Control de Módulo Relevador de 5V**[cite: 1].\n\n"
         "Para garantizar la seguridad de sus componentes y el aprendizaje correcto, "
         "iremos paso a paso. **No podremos avanzar sin haber confirmado el paso previo**[cite: 1].\n\n"
         "⚠️ **Importante:** Disponen de un máximo de **2 preguntas cada 5 minutos**. Aprovechen el tiempo entre preguntas para armar y revisar las conexiones físicas.\n\n"

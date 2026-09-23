@@ -18,7 +18,7 @@ client = genai.Client(api_key=API_KEY)
 
 # 2. Configuración de página
 st.set_page_config(page_title="Tutor-Electro: Práctica 3", page_icon="🔌", layout="wide")
-st.title("🔌 1F-Tutor-Electro: Práctica 3 - Módulo Relevador de 5V con Motor")
+st.title("🔌 1G-Tutor-Electro: Práctica 3 - Módulo Relevador de 5V con Motor")
 st.caption("Asistente pedagógico secuencial paso a paso")
 
 # 3. Conexión a Google Sheets e Inicialización del Estado de Sesión
@@ -42,7 +42,7 @@ if not st.session_state.authenticated:
     if login_btn:
         try:
             # Leer credenciales desde la pestaña 'Credenciales' de Google Sheets
-            creds_df = conn.read(worksheet="Credenciales_F", ttl=0)
+            creds_df = conn.read(worksheet="Credenciales_G", ttl=0)
             
             # Buscar coincidencia exacta
             match = creds_df[
@@ -113,7 +113,11 @@ PASO 4: Cableado del Circuito desenergizado. En el protoboard solo se podrán us
 PASO 5: Energización y Verificación[cite: 1]. Pedir verificar si el LED PWR del relevador está encendido constante[cite: 1].
 PASO 6: Validación de Conmutación[cite: 1]. Verificar si el LED de estado parpadea cada 1s y si se escucha el 'clic' del conmutador interno[cite: 1].
 PASO 7: Pedir que el alumno conecte el motor con un diodo de protección a la salida del relevador
-PASO 8: Cuestionario Final (Hacer preguntas teóricas de 1 en 1)[cite: 1].
+PASO 8: Cuestionario Final. PRIMER PREGUNTA: ¿Qué fenómeno inductivo ocurre en la bobina del motorreductor al interrumpir la corriente y por qué es indispensable colocar un diodo de protección flyback? 
+PASO 9: SEGUNDA PREGUNTA: ¿Qué consecuencia eléctrica inmediata ocurriría si el diodo 1N4007 se conecta con la polaridad invertida (franja plateada hacia la tierra / GND)?
+PASO 10: TERCERA PREGUNTA: Explique la importancia de desconectar el cable USB de la computadora y alimentar todo el sistema a través del pin '5V' del Arduino con la placa de protoboard.
+PASO 11: CUARTA PREGUNTA: Explique el funcionamiento de los contactos COM (Común) y NO (Normalmente Abierto) del módulo relevador en la conmutación de la masa (GND) del motor.
+PASO 12: Felicitar al equipo y comunicarle que han concluido la práctica, decirles que ya pueden cerrar el navegador y que su bitácora ha sido registrada.
 
 [ESTILO Y TONO]
 - Profesional, riguroso con la seguridad eléctrica, paciente y alentador.
