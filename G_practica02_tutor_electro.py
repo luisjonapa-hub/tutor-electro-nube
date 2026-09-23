@@ -18,7 +18,7 @@ client = genai.Client(api_key=API_KEY)
 
 # 2. Configuración de página
 st.set_page_config(page_title="Tutor-Electro: Práctica 2", page_icon="🔌", layout="wide")
-st.title("🔌 Tutor-Electro: Práctica 2 - Módulo Relevador de 5V")
+st.title("🔌 1G-Tutor-Electro: Práctica 2 - Módulo Relevador de 5V")
 st.caption("Asistente pedagógico secuencial paso a paso")
 
 # 3. Conexión a Google Sheets e Inicialización del Estado de Sesión
@@ -42,7 +42,7 @@ if not st.session_state.authenticated:
     if login_btn:
         try:
             # Leer credenciales desde la pestaña 'Credenciales' de Google Sheets
-            creds_df = conn.read(worksheet="Credenciales", ttl=0)
+            creds_df = conn.read(worksheet="Credenciales_G", ttl=0)
             
             # Buscar coincidencia exacta
             match = creds_df[
