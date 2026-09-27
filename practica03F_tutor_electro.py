@@ -73,12 +73,12 @@ else:
         st.rerun()
 
 # Descarga del manual PDF (Protegido contra FileNotFoundError)
-if os.path.exists("Practica_2_Control_de_Modulo_Relevador_de_5V.pdf"):
-    with open("Practica_2_Control_de_Modulo_Relevador_de_5V.pdf", "rb") as pdf_file:
+if os.path.exists("Practica_3_Control_de_Potencia_RELEVADOR_MOTOR.pdf"):
+    with open("Practica_3_Control_de_Potencia_RELEVADOR_MOTOR.pdf", "rb") as pdf_file:
         st.sidebar.download_button(
             label="📄 Descargar Manual de Práctica",
             data=pdf_file,
-            file_name="Practica_2_Relevador.pdf",
+            file_name="Practica_3_RELEVADOR_MOTOR.pdf",
             mime="application/pdf"
         )
 
