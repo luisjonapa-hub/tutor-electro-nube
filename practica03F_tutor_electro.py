@@ -183,7 +183,7 @@ if prompt := st.chat_input("Escribe tu duda o avance de tu circuito aquí..."):
     # Consulta a la API con gemini-1.5-flash
     try:
         response = client.models.generate_content(
-            model="gemini-3.7-flash",
+            model="gemini-3.5-flash",
             contents=formatted_contents,
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_INSTRUCTION,
