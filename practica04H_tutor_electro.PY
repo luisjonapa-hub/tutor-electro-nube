@@ -73,7 +73,7 @@ else:
         st.rerun()
 
 # Descarga del manual PDF (Protegido contra FileNotFoundError)
-if os.path.exists("Practica_4_Practica_4_Control_de_Cargas_mediante_PWM_y_Transistor_BJT_2N2222A.pdf"):
+if os.path.exists("Practica_4_Control_de_Cargas_mediante_PWM_y_Transistor_BJT_2N2222A.pdf"):
     with open("Practica_4_Control_de_Cargas_mediante_PWM_y_Transistor_BJT_2N2222A.pdf", "rb") as pdf_file:
         st.sidebar.download_button(
             label="📄 Descargar Manual de Práctica",
