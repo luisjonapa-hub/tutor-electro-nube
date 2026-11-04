@@ -73,8 +73,8 @@ else:
         st.rerun()
 
 # Descarga del manual PDF (Protegido contra FileNotFoundError)
-if os.path.exists("Practica_7_Visualizacion_3D_Interactiva_con_Processing_y_Arduino_mediante_Modulo_Bluetooth_HC-05_HC-06.pdf"):
-    with open("Practica_7_Visualizacion_3D_Interactiva_con_Processing_y_Arduino_mediante_Modulo_Bluetooth_HC-05_HC-06.pdf", "rb") as pdf_file:
+if os.path.exists("practica7.pdf"):
+    with open("practica7.pdf", "rb") as pdf_file:
         st.sidebar.download_button(
             label="📄 Descargar Manual de Práctica",
             data=pdf_file,
